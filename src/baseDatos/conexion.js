@@ -20,7 +20,7 @@ const defineVW_Top10MenosVendidos = require('../modelos/VW_Top10MenosVendidos');
 // CONFIGURACIÓN MYSQL PARA RAILWAY
 // ======================================
 const sequelize = new Sequelize(
-  process.env.MYSQLDATABASE,
+  process.env.MYSQL_DATABASE,
   process.env.MYSQLUSER,
   process.env.MYSQLPASSWORD,
   {
