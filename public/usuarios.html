@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Usuarios | Sistema Tienda</title>
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="assets/css/estilos.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ✅ NAVBAR DINÁMICA -->
+  <div id="navbar-dinamico"></div>
+
+  <!-- ✅ CONTENIDO PRINCIPAL -->
+  <main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold text-primary">Gestión de Usuarios</h2>
+      <button class="btn btn-success" id="btnNuevo" data-bs-toggle="modal" data-bs-target="#modalUsuario">
+        <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+      </button>
+    </div>
+
+    <!-- 🔍 BUSCADOR -->
+    <div class="input-group mb-3">
+      <span class="input-group-text">🔍</span>
+      <input type="text" id="buscar" class="form-control" placeholder="Buscar usuario..." />
+    </div>
+
+    <!-- 🧾 TABLA -->
+    <div class="table-responsive shadow p-3 bg-body rounded">
+      <table class="table table-hover align-middle text-center" id="tablaUsuarios">
+        <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ✅ MODAL CREAR / EDITAR USUARIO -->
+  <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formUsuario">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalUsuarioLabel">Registrar Usuario</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <input type="hidden" id="id_usuarios" />
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" id="nombre" class="form-control" placeholder="Ej: Juan Pérez" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Nombre de usuario</label>
+                <input type="text" id="username" class="form-control" placeholder="Ej: jperez" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Correo</label>
+                <input type="email" id="correo" class="form-control" placeholder="correo@ejemplo.com" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" />
+                <small class="text-muted">Dejar vacío si no desea cambiarla</small>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Rol</label>
+                <select id="rol_id" class="form-select" required>
+                  <option value="">Seleccione un rol...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/usuarios.js"></script>
+</body>
+</html>

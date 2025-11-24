@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Ventas | Sistema Tienda</title>
+
+  <!-- ✅ Estilos -->
+  <link rel="stylesheet" href="assets/css/estilos.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    body { background-color: #121212; color: #f8f9fa; }
+    .card { background-color: #1e1e1e; border: 1px solid #333; color: #fff; }
+    .modal-content { background-color: #1e1e1e; color: #fff; }
+    .table-dark th, .table-dark td { vertical-align: middle; }
+    #totalVenta { font-weight: bold; font-size: 1.2rem; color: #ffc107; }
+    #clienteNombreVisible {
+      font-size: 1.05rem;
+      color: #ffc107;
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ NAVBAR DINÁMICA -->
+  <div id="navbar-dinamico"></div>
+
+  <!-- ✅ CONTENIDO PRINCIPAL -->
+  <main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fw-bold text-warning">Gestión de Ventas</h2>
+      <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ventaModal">➕ Nueva Venta</button>
+    </div>
+
+    <div class="card shadow-sm p-3 mb-4">
+      <h5 class="mb-3">Listado de Ventas</h5>
+      <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover align-middle" id="tablaVentas">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Usuario</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="text-center"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- ✅ MODAL REGISTRAR VENTA -->
+  <div class="modal fade" id="ventaModal" tabindex="-1" aria-labelledby="ventaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <div>
+            <h5 class="modal-title" id="ventaModalLabel">Registrar Venta</h5>
+            <small id="clienteNombreVisible" class="d-none"></small>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formVenta">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Cédula Cliente</label>
+                <input type="text" id="cedulaCliente" class="form-control" placeholder="Digite la cédula">
+                <input type="hidden" id="cliente_id">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Nombre del Cliente</label>
+                <input type="text" id="nombreCliente" class="form-control" placeholder="Nombre aparecerá aquí" readonly>
+              </div>
+
+              <div class="col-md-4">
+                <label for="usuario_id" class="form-label">Asesor de venta</label>
+                <select id="usuario_id" class="form-select" required></select>
+              </div>
+            </div>
+
+            <hr class="border-secondary">
+
+            <div class="row mb-3">
+              <div class="col-md-5">
+                <label for="producto_id" class="form-label">Producto</label>
+                <select id="producto_id" class="form-select"></select>
+              </div>
+              <div class="col-md-3">
+                <label for="cantidad" class="form-label">Cantidad</label>
+                <input type="number" id="cantidad" class="form-control" min="1" value="1">
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <button type="button" id="btnAgregarDetalle" class="btn btn-warning w-100">Agregar</button>
+              </div>
+              <div class="col-md-2 d-flex align-items-end justify-content-end">
+                <span id="totalVenta">Total: $0</span>
+              </div>
+            </div>
+
+            <table class="table table-dark table-bordered" id="tablaDetalles">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </form>
+        </div>
+
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="formVenta" class="btn btn-success">💾 Guardar Venta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ SCRIPTS EN ORDEN CORRECTO -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/ventas.js"></script>
+
+  <!-- ✅ Script para marcar la pestaña activa automáticamente -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".navbar-nav .nav-link");
+      links.forEach(link => {
+        if (window.location.pathname.includes(link.getAttribute("href"))) {
+          link.classList.add("active");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
