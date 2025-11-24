@@ -2,10 +2,10 @@
   "name": "sistema_tienda",
   "version": "1.0.0",
   "description": "Sistema de gestión de tienda con Express y Sequelize",
-  "main": "src/app.js",
+  "main": "app.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node app.js",
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
