@@ -2,6 +2,7 @@
 require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
 
+// Importación de modelos
 const defineCategoria = require('../modelos/Categoria');
 const defineCliente = require('../modelos/Cliente');
 const defineConfiguracion = require('../modelos/Configuracion');
@@ -15,28 +16,24 @@ const defineVW_GananciasPorFecha = require('../modelos/VW_GananciasPorFecha');
 const defineVW_Top10MasVendidos = require('../modelos/VW_Top10MasVendidos');
 const defineVW_Top10MenosVendidos = require('../modelos/VW_Top10MenosVendidos');
 
-
-// ✅ Crear conexión compatible con Railway
+// ======================================
+// CONFIGURACIÓN MYSQL PARA RAILWAY
+// ======================================
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  process.env.MYSQLDATABASE,   // Nombre BD
+  process.env.MYSQLUSER,       // Usuario
+  process.env.MYSQLPASSWORD,   // Password
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
+    host: process.env.MYSQLHOST,
+    port: process.env.MYSQLPORT || 3306,
     dialect: 'mysql',
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
+    logging: false
   }
 );
 
-
-// 📌 Inicializar modelos
+// ======================================
+// Inicialización de modelos
+// ======================================
 const Categoria = defineCategoria(sequelize, DataTypes);
 const Cliente = defineCliente(sequelize, DataTypes);
 const Configuracion = defineConfiguracion(sequelize, DataTypes);
@@ -50,51 +47,47 @@ const VW_GananciasPorFecha = defineVW_GananciasPorFecha(sequelize, DataTypes);
 const VW_Top10MasVendidos = defineVW_Top10MasVendidos(sequelize, DataTypes);
 const VW_Top10MenosVendidos = defineVW_Top10MenosVendidos(sequelize, DataTypes);
 
+// ======================================
+// Relaciones entre modelos
+// ======================================
 
-// =========================
-// Asociaciones entre modelos
-// =========================
-
-// PRODUCTO - CATEGORIA - PROVEEDOR
+// PRODUCTO – CATEGORIA – PROVEEDOR
 Producto.belongsTo(Categoria, { foreignKey: 'id_categoria', as: 'categoria' });
 Categoria.hasMany(Producto, { foreignKey: 'id_categoria', as: 'productos' });
 
 Producto.belongsTo(Proveedor, { foreignKey: 'id_proveedor', as: 'proveedor' });
 Proveedor.hasMany(Producto, { foreignKey: 'id_proveedor', as: 'productos' });
 
-// USUARIO - ROL
+// USUARIO – ROL
 Usuario.belongsTo(Rol, { foreignKey: 'id_roles', as: 'rol' });
 Rol.hasMany(Usuario, { foreignKey: 'id_roles', as: 'usuarios' });
 
-// VENTA - CLIENTE - USUARIO
+// VENTA – CLIENTE – USUARIO
 Venta.belongsTo(Cliente, { foreignKey: 'id_clientes', as: 'cliente' });
 Cliente.hasMany(Venta, { foreignKey: 'id_clientes', as: 'ventas' });
 
 Venta.belongsTo(Usuario, { foreignKey: 'id_usuarios', as: 'usuario' });
 Usuario.hasMany(Venta, { foreignKey: 'id_usuarios', as: 'ventas' });
 
-// DETALLEVENTA - VENTA - PRODUCTO
+// DETALLEVENTA – VENTA – PRODUCTO
 DetalleVenta.belongsTo(Venta, { foreignKey: 'id_ventas', as: 'venta' });
 Venta.hasMany(DetalleVenta, { foreignKey: 'id_ventas', as: 'detalles' });
 
 DetalleVenta.belongsTo(Producto, { foreignKey: 'id_productos', as: 'producto' });
 Producto.hasMany(DetalleVenta, { foreignKey: 'id_productos', as: 'detallesVenta' });
 
-
-// =========================
+// ======================================
 // Conexión y sincronización
-// =========================
-
+// ======================================
 sequelize.authenticate()
   .then(() => console.log('✔ Conexión exitosa a la base de datos.'))
   .catch(err => console.error('❌ Error al conectar con la base de datos:', err));
 
-sequelize.sync({ alter: false, force: false })
+sequelize.sync({ alter: false })
   .then(() => console.log('✔ Modelos sincronizados.'))
   .catch(err => console.error('❌ Error al sincronizar modelos:', err));
 
-
-// Exportar
+// Exportación
 module.exports = {
   Categoria,
   Cliente,
